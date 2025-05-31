@@ -39,7 +39,7 @@ public class _01_IntroToBitShifting {
         int i = 0b00010011;
         System.out.println("i is ........: " + printBin(i));
         
-        i = i << 2;
+        i = i << 1;
         System.out.println("i << 2 is ...: " + printBin(i));
         
         i = 0b10000000000000000000000000000000;
