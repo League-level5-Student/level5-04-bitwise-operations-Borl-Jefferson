@@ -29,21 +29,30 @@ import org.junit.jupiter.api.Test;
 public class _02_Rotate {
     
     int rotateLeft(int value, int rotateAmount) {
-    	String out=""+value;
+    	System.out.println("rotating " + Integer.toBinaryString(value) +" " + rotateAmount + " left");
+    	String out=""+Integer.toBinaryString(value);
     	String carry="";
     	for (int i = 0; i < rotateAmount; i++) {
-			carry=out.substring(out.length()-1, out.length());
-			out=out.substring(0, out.length()-1);
+			carry=out.substring(0, 1);
+			out=out.substring(1, out.length());
 			out+=carry;
 		}
-    	
-    	
-        return Integer.parseInt(out);
+        return cbs(out);
     }
     
     int rotateRight(int value, int rotateAmount) {
-        return -1;
+    	System.out.println("rotating " + Integer.toBinaryString(value) +" " + rotateAmount + " right");
+    	String out=""+Integer.toBinaryString(value);
+    	String carry="";
+    	while(out.length()!=32) {
+    		out="0"+out;
+    	}
+    	for (int i = 0; i < rotateAmount; i++) {
+			out=out.substring(out.length()-1, out.length())+out.substring(0, out.length()-1);
+		}
+        return cbs(out);
     }
+    
     
     @Test
     void testRotateLeft() {
@@ -54,7 +63,7 @@ public class _02_Rotate {
         System.out.println("Expected: " + Integer.toBinaryString(-15));
         System.out.println("Actual  : " + Integer.toBinaryString(result));
         assertEquals(-15, result);
-        
+      
         result = rotateLeft(i, 3);
         System.out.println();
         System.out.println("Expected: " + Integer.toBinaryString(-57));
@@ -65,7 +74,8 @@ public class _02_Rotate {
     @Test
     void testRotateRight() {
         int i = 7;
-        
+        //0111
+          System.out.println("\nright\n");
         int result = rotateRight(i, 1);
         System.out.println("\nRight rotate tests");
         System.out.println("Expected: " + Integer.toBinaryString(-2147483645));
@@ -78,4 +88,28 @@ public class _02_Rotate {
         System.out.println("Actual  : " + Integer.toBinaryString(result));
         assertEquals(458752, result);
     }
+    
+    
+    int cbs(String binStr) {
+    	int outPut = 0;
+    	System.out.println(binStr);
+    	if(binStr.substring(0, 1).equals("1")) {
+    		System.out.println("negative");
+    		for (int i = 1; i < binStr.length(); i++) {
+    			outPut+=Math.abs(Character.getNumericValue(binStr.charAt(i))-1)*(Math.pow(2, binStr.length()-1-i));
+			}
+    		outPut+=1;
+    		outPut*=-1;
+    	}else {
+    		System.out.println("positive");
+    		for (int i = binStr.length()-1; i > 0; i--) {
+			outPut+=Character.getNumericValue(binStr.charAt(i))*(Math.pow(2, binStr.length()-1-i));
+			System.out.println(outPut);
+    	}
+    	}
+    	System.out.println(outPut);
+        return outPut;
+    }
+    
+    
 }
