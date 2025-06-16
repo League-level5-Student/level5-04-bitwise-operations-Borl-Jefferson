@@ -54,4 +54,5 @@ public class _02_BinaryToDecimal {
         expected = 165;
         assertEquals(expected, convertBinaryStringToDecimalInt(binStr));
     }
+    
 }

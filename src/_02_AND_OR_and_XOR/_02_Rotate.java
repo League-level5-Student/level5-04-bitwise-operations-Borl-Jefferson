@@ -33,9 +33,7 @@ public class _02_Rotate {
     	String out=""+Integer.toBinaryString(value);
     	String carry="";
     	for (int i = 0; i < rotateAmount; i++) {
-			carry=out.substring(0, 1);
-			out=out.substring(1, out.length());
-			out+=carry;
+			out=out.substring(1, out.length())+out.substring(0, 1);
 		}
         return cbs(out);
     }
