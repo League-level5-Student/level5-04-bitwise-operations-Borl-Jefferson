@@ -52,23 +52,42 @@ public class _02_HexadecimalPrinter implements ActionListener {
      * You don't have to handle negative numbers unless you want the challenge!
      */
     String binaryToHex(String binaryStr) {
+    	String out = "";
     	Boolean run = true;
+    	int bin = cbsdi(binaryStr);
     	while (run) {
-    		
+    		System.out.println(bin/16);
+    		if(bin/16>0) {
+    			out+=hexsingle(bin/16);
+    		}else {
+    			out+=hexsingle(bin%16);
+    			run=false;
+    		}
+    		bin-=16*(bin/16);
     	}
-        return "-";
+    	System.out.println(out);
+        return out;
     }
     
     String binaryToDec(String binaryStr) {
-        return "-";
+        return String.valueOf(cbd(binaryStr));
     }
 
     /*
      * ASCII values are exactly 8 bits so return '-' if there isn't.
      */
     String binaryToAscii(String binaryStr) {
-        if (binaryStr.length() != 8) {
-            return "-";
+        if (binaryStr.length() % 8==0) {
+        	//StringBuilder out = new StringBuilder();
+        	String out ="";
+        	int len8 = binaryStr.length()/8;
+        	for (int i = 0; i < len8; i++) {
+			int ascii = cbsdi(binaryStr.substring(0, 8));
+			System.out.println("ascii: " + (byte)ascii+" i: "+i + " len/8 "+binaryStr.length()/8);
+			out+=((char)(byte)ascii);
+			binaryStr=binaryStr.substring(8, binaryStr.length());
+			}
+        	return out.toString();
         }
 
         return "-";
@@ -157,4 +176,67 @@ public class _02_HexadecimalPrinter implements ActionListener {
         constraints.gridheight = 1;             // This is how many vertical cells to span across
         this.panel.add(component, constraints);
     }
+    int cbsdi(String binStr) {
+    	int outPut = 0;
+    	System.out.println(binStr);
+    	for (int i = binStr.length()-1; i > -1; i--) {
+    		outPut+=Character.getNumericValue(binStr.charAt(i))*(Math.pow(2, binStr.length()-1-i));
+    	}
+    	
+        return outPut;
+    }
+    
+    public String cdb(int decimalNum) {
+        String binaryStr = "";
+        do {
+            // 1. Logical right shift by 1
+            int quotient = decimalNum >>> 1;
+
+            // 2. Check remainder and add '1' or '0'
+            if( decimalNum % 2 != 0 ){
+                binaryStr = '1' + binaryStr;
+            } else {
+                binaryStr = '0' + binaryStr;
+            }
+
+            decimalNum = quotient;
+
+            // 3. Repeat until number is 0
+        } while( decimalNum != 0 );
+
+        return binaryStr;
+    }
+    int cbd(String binStr) {
+    	int outPut = 0;
+    	System.out.println(binStr);
+    	for (int i = binStr.length()-1; i > -1; i--) {
+    		outPut+=Character.getNumericValue(binStr.charAt(i))*(Math.pow(2, binStr.length()-1-i));
+			System.out.println(binStr.substring(i,i+1)+" =" + Integer.parseInt(binStr.substring(i,i+1))*(Math.pow(2, binStr.length()-1-i)));
+    	}
+    	
+        return outPut;
+    }
+     String hexsingle(int in) {
+    	 String out = "";
+    	 if(in<9) {
+    		 out+=in;
+    	 }else if(in==10){
+    		 out="a";
+    	 }else if(in==11){
+    		 out="b";
+    	 }else if(in==12){
+    		 out="c";
+    	 }else if(in==13){
+    		 out="d";
+    	 }else if(in==14){
+    		 out="e";
+    	 }else if(in==15){
+    		 out="f";
+    	 }else {
+    		 out=binaryToHex(cdb(in));
+    	 }
+    	 
+    	return out;
+    }
+
 }
