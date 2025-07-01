@@ -94,7 +94,7 @@ public class LightSwitches implements GameControlScene {
     	lightsOnOff=(byte) (lightsOnOff|(~lightsBitmap));
     }
     
-    /*
+    /* 
      * This method should toggle the state of multiple lights
      * example input:
      * lightsOnOff  = 0b10000001  // blue(0) and cyan(7) on
