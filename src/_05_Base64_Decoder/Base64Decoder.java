@@ -32,7 +32,7 @@ package _05_Base64_Decoder;
  * bits for a total of 8 unused bits. We can shift the bits in each byte to
  * to fit into 3 bytes with no unused bits.
  *       Byte 3      Byte 2      Byte 1       Byte 0    // 4 total bytes (32 bits)
- *      00111111    00111111    00111111     00111111   // "////"
+ *      00111111    00111111    00111111     00111111   // "////"  11111100
  *               ____// |__|  ___/___/ \\__  __|____|
  *        111111 11     1111 1111        11  111111     // 3 total bytes (24 bits)
  *         Byte 2         Byte 1           Byte 0
@@ -56,19 +56,51 @@ public class Base64Decoder {
     //1. Complete this method so that it returns the index in
     //   the base64Chars array that corresponds to the passed in char.
     public static byte convertBase64Char(char c){
-        return 0;
+    	for (byte i = 0; i < base64Chars.length; i++) {
+			if(c==base64Chars[i]) {
+				return i;
+			}
+		}
+        return -1;
     }
 
     //2. Complete this method so that it will take in a string that is 4
     //   characters long and return an array of 3 bytes (24 bits). The byte
     //   array should be the binary value of the encoded characters.
     public static byte[] convert4CharsTo24Bits(String s){
-        return null;
+    	byte out[] = {0, 0, 0};
+    	int builder=0;
+  
+			builder = (builder | (convertBase64Char(s.charAt(0))<<2))<<6;
+			builder = (builder | (convertBase64Char(s.charAt(1))<<2))<<6;
+			builder = (builder | (convertBase64Char(s.charAt(2))<<2))<<6;
+			builder = (builder | (convertBase64Char(s.charAt(3))<<2))>>2;
+			System.out.println(Integer.toBinaryString(builder));
+			out[0]= (byte) (builder>>16);
+			out[1]= (byte) ((builder<<16)>>24);
+			out[2]= (byte) ((builder<<24)>>24);
+        return out;
     }
 
     //3. Complete this method so that it takes in a string of any length
     //   and returns the full byte array of the decoded base64 characters.
     public static byte[] base64StringToByteArray(String file) {
-        return null;
+    	int i;
+    	int amount = file.length()/4*3+file.length()%4;
+    	byte[] out = new byte[amount];
+    	for (i = 4; i < file.length()-4; i*=4) {
+			out[i/4*3-1]=convert4CharsTo24Bits(file.substring(i-4, i))[0];
+			out[i/4*3]=convert4CharsTo24Bits(file.substring(i-4, i))[1];
+			out[i/4*3+1]=convert4CharsTo24Bits(file.substring(i-4, i))[2];
+			System.out.println("out");
+			System.out.println(Integer.toBinaryString(out[i/4*3-1])+", "+Integer.toBinaryString(out[i/4*3])+", "+Integer.toBinaryString(out[i/4*3+1]));
+			System.out.println(out[i/4*3-1]+", "+out[i/4*3]+", "+out[i/4*3+1]);
+		}
+    	for (int j = -1; j < file.length()%4-1; j++) {
+			out[i/4*3+j]=convertBase64Char(file.charAt(j));
+		}
+    	
+        return out;
     }
+    
 }
