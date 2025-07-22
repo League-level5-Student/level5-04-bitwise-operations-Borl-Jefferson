@@ -85,21 +85,18 @@ public class Base64Decoder {
     //3. Complete this method so that it takes in a string of any length
     //   and returns the full byte array of the decoded base64 characters.
     public static byte[] base64StringToByteArray(String file) {
+    	System.out.println(file.length());
     	int i;
-    	int amount = file.length()/4*3+file.length()%4;
+    	int amount = file.length()/4*3+(file.length()%4);
     	byte[] out = new byte[amount];
-    	for (i = 4; i < file.length()-4; i*=4) {
-			out[i/4*3-1]=convert4CharsTo24Bits(file.substring(i-4, i))[0];
-			out[i/4*3]=convert4CharsTo24Bits(file.substring(i-4, i))[1];
-			out[i/4*3+1]=convert4CharsTo24Bits(file.substring(i-4, i))[2];
-			System.out.println("out");
-			System.out.println(Integer.toBinaryString(out[i/4*3-1])+", "+Integer.toBinaryString(out[i/4*3])+", "+Integer.toBinaryString(out[i/4*3+1]));
-			System.out.println(out[i/4*3-1]+", "+out[i/4*3]+", "+out[i/4*3+1]);
+    	for (i = 4; i <= file.length(); i+=4) {
+			out[i/4*3-3]=convert4CharsTo24Bits(file.substring(i-4, i))[0];
+			out[i/4*3-2]=convert4CharsTo24Bits(file.substring(i-4, i))[1];
+			out[i/4*3-1]=convert4CharsTo24Bits(file.substring(i-4, i))[2];
+			
+			//System.out.println((i/4*3-2)+" "+out[i/4*3-3]+", \n"+(i/4*3-1)+" "+out[i/4*3-2]+", \n"+(i/4*3)+" "+out[i/4*3-1]);
 		}
-    	for (int j = -1; j < file.length()%4-1; j++) {
-			out[i/4*3+j]=convertBase64Char(file.charAt(j));
-		}
-    	
+    	System.out.println(amount);
         return out;
     }
     

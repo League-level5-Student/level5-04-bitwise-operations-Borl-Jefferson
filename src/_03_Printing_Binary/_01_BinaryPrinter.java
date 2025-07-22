@@ -1,5 +1,7 @@
 package _03_Printing_Binary;
 
+import java.util.Scanner;
+
 public class _01_BinaryPrinter {
       /*
      * Complete the methods below so they print the passed in parameter in binary.
@@ -52,12 +54,22 @@ printByteBinary(second);
     }
 
     public static void main(String[] args) {
-    	System.out.println("byte binary");
+    /*	System.out.println("byte binary");
         printByteBinary((byte) 0b01110111);
         System.out.println("\n\nshort binary");
         printShortBinary((short) 0b0111_0111_1000_1000);
         System.out.println("\n\nint binary");
-        printIntBinary((int) 0b0111_0111_1000_1000_0101_0101_1010_1010);
+        printIntBinary((int) 0b0111_0111_1000_1000_0101_0101_1010_1010);*/
+        System.out.println("---Calculator---");
+        Scanner scannington = new Scanner(System.in);
+        while(true) {
+        	String in = scannington.nextLine();
+        	String[] parts = new String[]{in.split(" ")[0], in.split(" ")[1]};
+        	printByteBinary((byte)Integer.parseInt(parts[0]));
+        	System.out.println("");
+        	printByteBinary((byte)Integer.parseInt(parts[1]));
+        	System.out.println("");
+        }
     }
-   
+    
 }
