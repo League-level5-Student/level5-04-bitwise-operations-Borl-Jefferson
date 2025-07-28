@@ -64,11 +64,52 @@ printByteBinary(second);
         Scanner scannington = new Scanner(System.in);
         while(true) {
         	String in = scannington.nextLine();
+        	char select =in.charAt(0);
+        	in = in.substring(1,in.length());
+        	
+        		if(in.contains(" ")) {
+        			in = select+in;
         	String[] parts = new String[]{in.split(" ")[0], in.split(" ")[1]};
         	printByteBinary((byte)Integer.parseInt(parts[0]));
         	System.out.println("");
         	printByteBinary((byte)Integer.parseInt(parts[1]));
         	System.out.println("");
+        	
+        		}else if(select=='b') {
+        			
+        			printByteBinary((byte)Integer.parseInt(in));
+        			System.out.println("");
+        			
+        		}else if(in.contains(">")) {
+            	in = select+in;
+            	String[] parts = new String[]{in.split(">")[0], in.split(">")[1]};
+            	String rotate = parts[0];
+            	for (int i = 0; i < Integer.parseInt(parts[1]); i++) {
+        			rotate="0"+rotate.substring(0, rotate.length()-1);
+        		}int out = 0;
+            	for (int i = rotate.length()-1; i > -1; i--) {
+            		out+=Character.getNumericValue(rotate.charAt(i))*(Math.pow(2, rotate.length()-1-i));
+            	}System.out.println(out);
+            	
+            }else if(in.contains("<")) {
+            	in = select+in;
+            	String[] parts = new String[]{in.split("<")[0], in.split("<")[1]};
+            	String rotate = parts[0];
+            	for (int i = 0; i < Integer.parseInt(parts[1]); i++) {
+        			rotate=rotate.substring(1, rotate.length())+"0";
+        		}int out = 0;
+            	for (int i = rotate.length()-1; i > -1; i--) {
+            		out+=Character.getNumericValue(rotate.charAt(i))*(Math.pow(2, rotate.length()-1-i));
+            	}System.out.println(out);
+            }else if(select=='0' || select=='1' ) {
+        			in = select+in;
+        		int out = 0;
+            	for (int i = in.length()-1; i > -1; i--) {
+            		out+=Character.getNumericValue(in.charAt(i))*(Math.pow(2, in.length()-1-i));
+            	}
+                System.out.println(out);
+                
+            }else {System.out.println("no operation selected");}
         }
     }
     
