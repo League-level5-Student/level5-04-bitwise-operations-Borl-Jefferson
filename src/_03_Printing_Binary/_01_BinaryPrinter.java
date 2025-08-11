@@ -1,5 +1,6 @@
 package _03_Printing_Binary;
 
+import java.util.Iterator;
 import java.util.Scanner;
 
 public class _01_BinaryPrinter {
@@ -8,6 +9,8 @@ public class _01_BinaryPrinter {
      * Do not use the Integer.toBinaryString method!
      * Use the main method to test your methods.
      */
+	
+	
     public static void printByteBinary(byte b) {
     	for (int i = 0; i < 8; i++) {
 int out =b;
@@ -54,28 +57,76 @@ printByteBinary(second);
     }
 
     public static void main(String[] args) {
-    /*	System.out.println("byte binary");
-        printByteBinary((byte) 0b01110111);
-        System.out.println("\n\nshort binary");
-        printShortBinary((short) 0b0111_0111_1000_1000);
-        System.out.println("\n\nint binary");
-        printIntBinary((int) 0b0111_0111_1000_1000_0101_0101_1010_1010);*/
+    	Boolean printBin = false;
+    	String select;
+    	
         System.out.println("---Calculator---");
         Scanner scannington = new Scanner(System.in);
         while(true) {
         	String in = scannington.nextLine();
-        	char select =in.charAt(0);
+        	select =in.substring(0,1);
         	in = in.substring(1,in.length());
         	
-        		if(in.contains(" ")) {
+        		if(in.contains("^")) {
         			in = select+in;
-        	String[] parts = new String[]{in.split(" ")[0], in.split(" ")[1]};
-        	printByteBinary((byte)Integer.parseInt(parts[0]));
-        	System.out.println("");
-        	printByteBinary((byte)Integer.parseInt(parts[1]));
-        	System.out.println("");
+        	String[] parts = new String[]{
+        			d2b(Integer.parseInt(in.split("\\^")[0])), 
+        			d2b(Integer.parseInt(in.split("\\^")[1]))};
+        	String out ="";
+        	for (int i = 0; i < parts[1].length(); i++) {
+				if(parts[0].charAt(i)!=parts[1].charAt(i) &&
+						(parts[0].charAt(i)=='1' || parts[1].charAt(i)=='1')) {
+					out+="1";
+				}else {
+					out+="0";
+				}
+			}
         	
-        		}else if(select=='b') {
+        	printBin=true;
+        	in=out;
+        	select="";
+        		}else if(in.contains("&")) {
+        			in = select+in;
+        	String[] parts = new String[]{
+        			d2b(Integer.parseInt(in.split("\\&")[0])), 
+        			d2b(Integer.parseInt(in.split("\\&")[1]))};
+        	String out ="";
+        	for (int i = 0; i < parts[1].length(); i++) {
+				if(parts[0].charAt(i)=='1' && parts[1].charAt(i)=='1'){
+					out+="1";
+				}else {
+					out+="0";
+				}
+			}
+        	
+        	printBin=true;
+        	in=out;
+        	select="";
+        		}else if(in.contains("|")) {
+        			in = select+in;
+        	String[] parts = new String[]{
+        			d2b(Integer.parseInt(in.split("\\|")[0])), 
+        			d2b(Integer.parseInt(in.split("\\|")[1]))};
+        	String out ="";
+        	for (int i = 0; i < parts[1].length(); i++) {
+				if(parts[0].charAt(i)=='1' || parts[1].charAt(i)=='1'){
+					out+="1";
+				}else {
+					out+="0";
+				}
+			}
+        	
+        	printBin=true;
+        	in=out;
+        	select="";
+        		}else if(in.contains(" ")) {
+        			in = select+in;
+                	String[] parts = new String[]{in.split(" ")[0], in.split(" ")[1]};
+                	printByteBinary((byte)Integer.parseInt(parts[0]));
+                	System.out.println("");
+                	printByteBinary((byte)Integer.parseInt(parts[1]));
+                	System.out.println("");
+        		}else if(select.equals("b")) {
         			
         			printByteBinary((byte)Integer.parseInt(in));
         			System.out.println("");
@@ -83,7 +134,7 @@ printByteBinary(second);
         		}else if(in.contains(">")) {
             	in = select+in;
             	String[] parts = new String[]{in.split(">")[0], in.split(">")[1]};
-            	String rotate = parts[0];
+            	String rotate = d2b(Integer.parseInt(parts[0]));
             	for (int i = 0; i < Integer.parseInt(parts[1]); i++) {
         			rotate="0"+rotate.substring(0, rotate.length()-1);
         		}int out = 0;
@@ -94,23 +145,52 @@ printByteBinary(second);
             }else if(in.contains("<")) {
             	in = select+in;
             	String[] parts = new String[]{in.split("<")[0], in.split("<")[1]};
-            	String rotate = parts[0];
+            	String rotate = d2b(Integer.parseInt(parts[0]));
             	for (int i = 0; i < Integer.parseInt(parts[1]); i++) {
-        			rotate=rotate.substring(1, rotate.length())+"0";
+        			rotate+="0";
         		}int out = 0;
             	for (int i = rotate.length()-1; i > -1; i--) {
             		out+=Character.getNumericValue(rotate.charAt(i))*(Math.pow(2, rotate.length()-1-i));
             	}System.out.println(out);
-            }else if(select=='0' || select=='1' ) {
-        			in = select+in;
-        		int out = 0;
-            	for (int i = in.length()-1; i > -1; i--) {
-            		out+=Character.getNumericValue(in.charAt(i))*(Math.pow(2, in.length()-1-i));
-            	}
-                System.out.println(out);
-                
+            }else if(select.equals("0") || select.equals("1")) {
+            	printBin=true;
             }else {System.out.println("no operation selected");}
+        		if(printBin) {
+
+                	printBin=false;
+            			in = select+in;
+            		int out = 0;
+                	for (int i = in.length()-1; i > -1; i--) {
+                		out+=Character.getNumericValue(in.charAt(i))*(Math.pow(2, in.length()-1-i));
+                	}
+                    System.out.println(out);
+                    
+                
+        		}
         }
+    }
+    
+    public static String d2b(int decimalNum) {
+        String binaryStr = "";
+        do {
+            // 1. Logical right shift by 1
+            int quotient = decimalNum >>> 1;
+
+            // 2. Check remainder and add '1' or '0'
+            if( decimalNum % 2 != 0 ){
+                binaryStr = '1' + binaryStr;
+            } else {
+                binaryStr = '0' + binaryStr;
+            }
+
+            decimalNum = quotient;
+
+            // 3. Repeat until number is 0
+        } while( decimalNum != 0 );
+        while(binaryStr.length()<8) {
+        	binaryStr="0"+binaryStr;
+        }
+        return binaryStr;
     }
     
 }
